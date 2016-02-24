@@ -781,7 +781,15 @@ void kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx, u32 *ecx, u32 *edx)
 {
 	u32 function = *eax, index = *ecx;
 	struct kvm_cpuid_entry2 *best;
-
+	
+	/*
+	*intercept if eax=22
+	*/
+	if(function==22)
+	{
+		*eax=*ebx=*ecx=*edx=1;
+		return;
+	}
 	best = kvm_find_cpuid_entry(vcpu, function, index);
 
 	if (!best)
